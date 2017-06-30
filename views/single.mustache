@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	<div>
+	{{#users}}
+		<img src="{{avatar}}" alt="">
+		<p>{{name}}</p>
+		<p>{{address.city}}, {{address.country}}</p>
+		<p>{{job}}{{company}}{{^job}}looking for jobs{{/job}}</p>
+		<p>{{email}} | {{phone}}</p>
+		<p>Education: {{university}}</p>
+		<p>Skills:
+			<ul>{{skills}}<ul>
+		</p>
+	{{/users}}
+	</div>
+	</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="/main.css">
+	</head>
+	<body>
+	<div>
+			Single Word: {{singleword.word}}
+			<br>
+			Part of Speech: {{singleword.clues.partofspeech}}
+			<br>
+			Synonym: {{singleword.clues.synonym}}
+			<br>
+			Array: {{array}}
+			<br>
+			Guesses: {{guesses}}
+			<br>
+			Wrong Guesses: {{wrong}}
+			<br>
+			{{solvedmessage}}
+			<br>
+			<form action='/' method='post'>
+			Guess: <input type="text" name="inputguess" value="">
+			<br>
+			<input type="submit" name="Enter" value="Enter">
+		</form>
+	</div>
+	</body>
+</html>
