@@ -2,24 +2,23 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title></title>
+		<title>Hangman</title>
 		<link rel="stylesheet" href="/main.css">
 	</head>
 	<body>
-	<div>
+		<div id="blanks">
 			{{blanks}}
+		</div>
+		<div id="wrongguesses">
+			{{guesses}}
 			<br>
-			Wrong Guesses: {{guesses}}
-			<br>
-			Guesses Remaining: {{wrong}}
 			<br>
 			{{{solvedmessage}}}
-			<!-- <br>
-			<form action='/' method='post'>
-			Guess: <input type="text" name="inputguess" value="" maxlength="1" autofocus>
-			<br>
-			<input type="submit" name="Enter" value="Enter"> -->
-		</form>
-	</div>
+		</div>
+		<div id="hangmanimages">
+			<img id="hangman" src={{{hangmanimage}}}>
+		</div>
+		<script src="script.js">
+		</script>
 	</body>
 </html>

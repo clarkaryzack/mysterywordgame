@@ -1,0 +1,48 @@
+* {
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+}
+body {
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	grid-template-rows: 20% 20% 20% 20% 20%;
+	text-align: center;
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+}
+#blanks {
+	grid-row: 2/3;
+	grid-column: 1/6;
+	/*border-style: solid;
+	border-width: 1px;
+	border-color: black;*/
+	font-size: 100px;
+}
+#wrongguesses {
+	grid-row: 4/5;
+	grid-column: 2/3;
+	font-size: 30px
+	/*border-style: solid;
+	border-width: 1px;
+	border-color: black;*/
+}
+#hangmanimages {
+	grid-row: 4/5;
+	grid-column: 3/4;
+}
+#hangman {
+	width: 100%;
+	height: 100%;
+}
+input[type=text] {
+	width: 60px;
+	border: none;
+	font-size: 50px
+}
+input:focus {
+  outline: none;
+	color: transparent;
+	text-shadow: 0 0 0 black;
+}

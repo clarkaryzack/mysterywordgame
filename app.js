@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const fs    = require("fs")
-// const data = require("./data");
+const data = require("./data");
 
 const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
+const datawords = data.words
 
 
 app.engine('mustache', mustacheExpress());
@@ -28,16 +29,17 @@ app.use(session({
 
 app.get('/', function (req, res) {
 	getRndInteger(req, res)
-  res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay, wrong: req.session.guessesremaining, solvedmessage: req.session.solvedmessage});
+  res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay, solvedmessage: req.session.solvedmessage, hangmanimage: req.session.hangmanimage});
 });
 
 app.post('/playagain', function (req, res) {
 	getRndInteger(req, res)
-  res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay, wrong: req.session.guessesremaining, solvedmessage: req.session.solvedmessage});
+  res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay, solvedmessage: req.session.solvedmessage, hangmanimage: req.session.hangmanimage});
 });
 
 function getRndInteger(req, res) {
-	req.session.singleword = words[Math.floor(Math.random() * (words.length + 1) )];
+	// req.session.singleword = words[Math.floor(Math.random() * (words.length + 1) )];
+	req.session.singleword = datawords[Math.floor(Math.random() * (datawords.length + 1) )].word;
 	req.session.wordarr = [];
 	for (var i = 0; i < req.session.singleword.length; i++) {
 		req.session.wordarr.push(req.session.singleword.charAt(i))
@@ -49,28 +51,58 @@ function getRndInteger(req, res) {
 	req.session.blanksdisplay = req.session.blanksarr.join(" ");
 	req.session.guesses = []
 	req.session.guessdisplay = ""
-	req.session.guessesremaining = 10
-	req.session.wrongguesses = 0
-	req.session.solvedmessage = "<form action='/' method='post'><input type='text' name='inputguess' value='' maxlength='1' autofocus><br><input type='submit' name='Enter' value='Enter'>"
+	req.session.guessesremaining = 7
+	req.session.hangmanimage = "/images/Hangman-0.png"
+	req.session.solvedmessage = "<form action='/' method='post'><input type='text' name='inputguess' value='' maxlength='1' autocomplete='off' autofocus><br><input type='submit' name='Enter' value='Enter'>"
 };
 
 app.post ('/', function (req, res) {
+	req.body.inputguess = req.body.inputguess.toLowerCase()
+	console.log(req.body.inputguess)
 	solved = false;
-	req.session.inputguess = req.body.inputguess
-	var correctguess = false
+	var correctguess = false;
 	for (var i = 0; i < req.session.singleword.length; i++) {
-		if (req.session.inputguess === req.session.singleword.charAt(i)) {
-			req.session.blanksarr[i] = req.session.inputguess
+		if (req.body.inputguess === req.session.singleword.charAt(i)) {
+			req.session.blanksarr[i] = req.body.inputguess
 			req.session.blanksdisplay = req.session.blanksarr.join(" ");
 			correctguess = true
 		}
-	}
+	};
 	if (correctguess === false) {
-		req.session.guesses.push(req.session.inputguess.charAt(0));
-		req.session.guessdisplay = req.session.guesses.join (" ");
-		req.session.wrongguesses ++
+		var alreadyguessed = false
+		for (var i = 0; i < req.session.guesses.length; i++) {
+			if (req.session.guesses[i] === req.body.inputguess) {
+				alreadyguessed = true
+			}
+		}
+		if (req.body.inputguess === "") alreadyguessed = true
+		if (alreadyguessed === false) {
+			req.session.guesses.push(req.body.inputguess);
+			req.session.guessdisplay = req.session.guesses.join (" ");
+			req.session.guessesremaining = req.session.guessesremaining - 1;
+		}
 	}
-	req.session.guessesremaining = 10 - req.session.wrongguesses
+	if (req.session.guessesremaining === 6) {
+		req.session.hangmanimage = "/images/Hangman-1.png"
+	}
+	if (req.session.guessesremaining === 5) {
+		req.session.hangmanimage = "/images/Hangman-2.png"
+	}
+	if (req.session.guessesremaining === 4) {
+		req.session.hangmanimage = "/images/Hangman-3.png"
+	}
+	if (req.session.guessesremaining === 3) {
+		req.session.hangmanimage = "/images/Hangman-3.png"
+	}
+	if (req.session.guessesremaining === 2) {
+		req.session.hangmanimage = "/images/Hangman-4.png"
+	}
+	if (req.session.guessesremaining === 1) {
+		req.session.hangmanimage = "/images/Hangman-5.png"
+	}
+	if (req.session.guessesremaining === 0) {
+		req.session.hangmanimage = "/images/Hangman-6.png"
+	}
 	if (req.session.guessesremaining <= 0) {
 		req.session.solvedmessage = "YOU LOSE! The word was " + req.session.singleword + "." +
 		`<form action='/playagain' method='post'>
@@ -89,7 +121,7 @@ app.post ('/', function (req, res) {
 		<input type='submit' name= "/" value="Play Again?">
 		<form>`
 	}
-	res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay,  wrong: req.session.guessdisplay, solvedmessage: req.session.solvedmessage, wrong: req.session.guessesremaining});
+	res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay,  wrong: req.session.guessdisplay, solvedmessage: req.session.solvedmessage, hangmanimage: req.session.hangmanimage});
 })
 
 app.listen(3000, function () {
