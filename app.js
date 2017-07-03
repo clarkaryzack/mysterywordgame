@@ -5,15 +5,10 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const fs    = require("fs")
-const data = require("./data");
+// const data = require("./data");
 
-const words = data.words
-const arr = []
-const guesses = []
-const solvedmessage = "YOU SOLVED IT!"
+const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 
-var wrongguess = 0
-var correct = false
 
 app.engine('mustache', mustacheExpress());
 app.set('views', './views');
@@ -24,61 +19,78 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-var singleword;
-
-function getRndInteger(min, max) {
-		singleword = words[Math.floor(Math.random() * (max - min + 1) ) + min];
-		console.log(singleword)
-};
-
-getRndInteger(0, words.length)
-
-console.log(singleword)
-
-
-for(i=0 ; i < singleword.word.length ; i++) {
-	arr.push(singleword.word.charAt(i))
-}
-
-console.log(arr.length)
-console.log(arr)
-
-for (i=0 ; i < arr.length ; i++) {
-	guesses.push("_")
-}
-
-console.log(guesses)
-
-guessdisplay = guesses.join(" ")
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}))
 
 app.get('/', function (req, res) {
-  res.render('index', {singleword: singleword, array: arr, guesses: guessdisplay, wrong: wrongguess});
+	getRndInteger(req, res)
+  res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay, wrong: req.session.guessesremaining, solvedmessage: req.session.solvedmessage});
 });
 
-app.post('/', function (req, res) {
-	solved = false
-	let inputguess = req.body.inputguess
-	console.log(inputguess)
-	correct = false
-	for (let i=0 ; i < arr.length ; i++) {
-		if (inputguess === arr[i]) {
-			guesses[i] = arr[i];
-			correct = true
-			solved = true
-			for (let i=0 ; i < guesses.length ; i++) {
-				if (guesses[i] === "_") solved = false
-			}
-		}
-		guessdisplay = guesses.join(" ")
-	}
-	if (solved === true) {
-		res.render('index', {singleword: singleword, array: arr, guesses: guessdisplay, wrong: wrongguess, solvedmessage: solvedmessage});
-	}
-	if (correct === false) wrongguess ++
-	if (solved ===false) {
-		res.render('index', {singleword: singleword, array: arr, guesses: guessdisplay, wrong: wrongguess});
-	}
+app.post('/playagain', function (req, res) {
+	getRndInteger(req, res)
+  res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay, wrong: req.session.guessesremaining, solvedmessage: req.session.solvedmessage});
 });
+
+function getRndInteger(req, res) {
+	req.session.singleword = words[Math.floor(Math.random() * (words.length + 1) )];
+	req.session.wordarr = [];
+	for (var i = 0; i < req.session.singleword.length; i++) {
+		req.session.wordarr.push(req.session.singleword.charAt(i))
+	}
+	req.session.blanksarr = []
+	for (var i = 0; i < req.session.wordarr.length; i++) {
+		req.session.blanksarr.push("_")
+	}
+	req.session.blanksdisplay = req.session.blanksarr.join(" ");
+	req.session.guesses = []
+	req.session.guessdisplay = ""
+	req.session.guessesremaining = 10
+	req.session.wrongguesses = 0
+	req.session.solvedmessage = "<form action='/' method='post'><input type='text' name='inputguess' value='' maxlength='1' autofocus><br><input type='submit' name='Enter' value='Enter'>"
+};
+
+app.post ('/', function (req, res) {
+	solved = false;
+	req.session.inputguess = req.body.inputguess
+	var correctguess = false
+	for (var i = 0; i < req.session.singleword.length; i++) {
+		if (req.session.inputguess === req.session.singleword.charAt(i)) {
+			req.session.blanksarr[i] = req.session.inputguess
+			req.session.blanksdisplay = req.session.blanksarr.join(" ");
+			correctguess = true
+		}
+	}
+	if (correctguess === false) {
+		req.session.guesses.push(req.session.inputguess.charAt(0));
+		req.session.guessdisplay = req.session.guesses.join (" ");
+		req.session.wrongguesses ++
+	}
+	req.session.guessesremaining = 10 - req.session.wrongguesses
+	if (req.session.guessesremaining <= 0) {
+		req.session.solvedmessage = "YOU LOSE! The word was " + req.session.singleword + "." +
+		`<form action='/playagain' method='post'>
+		<input type='submit' name= "/" value="Play Again?">
+		<form>`
+	}
+	req.session.solved = true
+	for (var i = 0; i < req.session.blanksarr.length; i++) {
+		if (req.session.blanksarr[i] === "_") {
+			req.session.solved = false
+		}
+	}
+	if (req.session.solved === true) {
+		req.session.solvedmessage = "YOU SOLVED IT!" +
+		`<form action='/playagain' method='post'>
+		<input type='submit' name= "/" value="Play Again?">
+		<form>`
+	}
+	res.render('index', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay,  wrong: req.session.guessdisplay, solvedmessage: req.session.solvedmessage, wrong: req.session.guessesremaining});
+})
 
 app.listen(3000, function () {
   console.log('Successfully started express application!');

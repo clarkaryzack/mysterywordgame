@@ -7,24 +7,18 @@
 	</head>
 	<body>
 	<div>
-			Single Word: {{singleword.word}}
+			{{blanks}}
 			<br>
-			Part of Speech: {{singleword.clues.partofspeech}}
+			Wrong Guesses: {{guesses}}
 			<br>
-			Synonym: {{singleword.clues.synonym}}
+			Guesses Remaining: {{wrong}}
 			<br>
-			Array: {{array}}
-			<br>
-			Guesses: {{guesses}}
-			<br>
-			Wrong Guesses: {{wrong}}
-			<br>
-			{{solvedmessage}}
-			<br>
+			{{{solvedmessage}}}
+			<!-- <br>
 			<form action='/' method='post'>
-			Guess: <input type="text" name="inputguess" value="">
+			Guess: <input type="text" name="inputguess" value="" maxlength="1" autofocus>
 			<br>
-			<input type="submit" name="Enter" value="Enter">
+			<input type="submit" name="Enter" value="Enter"> -->
 		</form>
 	</div>
 	</body>
