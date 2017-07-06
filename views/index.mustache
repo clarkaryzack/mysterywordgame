@@ -6,17 +6,22 @@
 		<link rel="stylesheet" href="/main.css">
 	</head>
 	<body>
-		<div id="blanks">
-			{{blanks}}
+		<div id="title">
+			Hangman
 		</div>
-		<div id="wrongguesses">
-			{{guesses}}
-			<br>
-			<br>
-			{{{solvedmessage}}}
+		<div id="difficulty">
+			<form action="/easy" method="get">
+				<input type="submit" name="easybutton" value="Easy">
+			</form>
+			<form action="/medium" method="get">
+				<input type="submit" name="mediumbutton" value="Medium">
+			</form>
+			<form action="/hard" method="get">
+				<input type="submit" name="hardbutton" value="Hard">
+			</form>
 		</div>
 		<div id="hangmanimages">
-			<img id="hangman" src={{{hangmanimage}}}>
+			<img id="hangman" src=images/Hangman-6.png>
 		</div>
 		<script src="script.js">
 		</script>

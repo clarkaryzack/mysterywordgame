@@ -1,0 +1,53 @@
+
+const session = require('express-session');
+const express = require('express');
+const mustacheExpress = require('mustache-express');
+const bodyParser = require('body-parser');
+
+const router = express.Router();
+const app = express();
+const fs    = require("fs")
+const dataeasy = require("./data_easy");
+const datamedium = require("./data_medium");
+const logic = require('./logic');
+const expressValidator = require('express-validator');
+
+const hardwords = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
+const easywords = dataeasy.words
+const mediumwords = datamedium.words
+const routes = require('./routes');
+
+router.get('/', function (req, res) {
+  res.render('index');
+});
+
+router.get('/easy', function (req, res) {
+	req.session.difficulty = 0
+	res.redirect('/game')
+});
+
+router.get('/medium', function (req, res) {
+	req.session.difficulty = 1
+	res.redirect('/game')
+});
+
+router.get('/hard', function (req, res) {
+	req.session.difficulty = 2
+	res.redirect('/game')
+});
+
+router.get('/game', function (req, res) {
+	let getRandomWord = logic.getRandomWord(req, res);
+  res.render('game', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay, solvedmessage: req.session.solvedmessage, hangmanimage: req.session.hangmanimage});
+});
+
+router.post ('/game', function (req, res) {
+	let checkGuess = logic.checkGuess(req, res);
+	res.render('game', {singleword: req.session.singleword, array: req.session.wordarr, blanks: req.session.blanksdisplay, guesses: req.session.guessdisplay,  wrong: req.session.guessdisplay, solvedmessage: req.session.solvedmessage, hangmanimage: req.session.hangmanimage});
+});
+
+router.post ('/playagain', function (req, res) {
+	res.redirect('/')
+});
+
+module.exports = router;

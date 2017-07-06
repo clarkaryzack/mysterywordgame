@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Hangman</title>
+		<link rel="stylesheet" href="/main.css">
+	</head>
+	<body>
+		<div id="blanks">
+			{{blanks}}
+		</div>
+		<div id="wrongguesses">
+			{{guesses}}
+			<br>
+			<br>
+			{{{solvedmessage}}}
+		</div>
+		<div id="hangmanimages">
+			<img id="hangman" src={{{hangmanimage}}}>
+		</div>
+		<script src="script.js">
+		</script>
+	</body>
+</html>
