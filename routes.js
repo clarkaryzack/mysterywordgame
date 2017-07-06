@@ -3,6 +3,7 @@ const session = require('express-session');
 const express = require('express');
 const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
+const jsonfile = require('jsonfile');
 
 const router = express.Router();
 const app = express();
@@ -16,6 +17,12 @@ const hardwords = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase(
 const easywords = dataeasy.words
 const mediumwords = datamedium.words
 const routes = require('./routes');
+
+let winners;
+const savefile = 'winners.json';
+jsonfile.readFile(savefile, function(err,obj){
+	winners = obj;
+})
 
 router.get('/', function (req, res) {
   res.render('index');
@@ -48,6 +55,22 @@ router.post ('/game', function (req, res) {
 
 router.post ('/playagain', function (req, res) {
 	res.redirect('/')
+});
+
+router.post ('/winnerform', function (req, res) {
+	res.render('winnerform');
+});
+
+router.post ('/winnerlist', function (req, res) {
+	// let recordWinner = logic.recordWinner(req, res);
+	let name = req.body.winnername;
+	console.log(winners);
+	let id = winners.winners.length + 1;
+	winners.winners.push({"id": id, "name": name, "word": req.session.singleword, "difficulty": req.session.difflevel});
+	jsonfile.writeFileSync(savefile, winners);
+	res.render('winnerlist', {winners: winners.winners}
+	);
+
 });
 
 module.exports = router;

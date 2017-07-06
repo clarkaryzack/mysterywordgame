@@ -4,6 +4,7 @@ const fs = require("fs")
 
 const dataeasy = require("./data_easy");
 const datamedium = require("./data_medium");
+const jsonfile = require('jsonfile');
 
 const hardwords = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 const easywords = dataeasy.words
@@ -13,9 +14,18 @@ const mediumwords = datamedium.words
 
 const getRandomWord = function (req, res) {
 	console.log(req.session.difficulty);
-	if (req.session.difficulty === 0) {req.session.singleword=easywords[Math.floor(Math.random() * (easywords.length + 1) )];}
-	if (req.session.difficulty === 1) {req.session.singleword=mediumwords[Math.floor(Math.random() * (mediumwords.length + 1) )];}
-	if (req.session.difficulty === 2) {req.session.singleword=hardwords[Math.floor(Math.random() * (hardwords.length + 1) )];}
+	if (req.session.difficulty === 0){
+		req.session.singleword=easywords[Math.floor(Math.random() * (easywords.length + 1) )];
+		req.session.difflevel = "easy";
+	}
+	if (req.session.difficulty === 1){
+		req.session.singleword=mediumwords[Math.floor(Math.random() * (mediumwords.length + 1) )];
+		req.session.difflevel = "medium";
+	}
+	if (req.session.difficulty === 2){
+		req.session.singleword=hardwords[Math.floor(Math.random() * (hardwords.length + 1) )];
+		req.session.difflevel = "hard";
+	}
 
 	req.session.wordarr = [];
 	console.log(req.session.singleword)
@@ -31,7 +41,7 @@ const getRandomWord = function (req, res) {
 	req.session.guessdisplay = ""
 	req.session.guessesremaining = 7
 	req.session.hangmanimage = "/images/Hangman-0.png"
-	req.session.solvedmessage = "<form action='/game' method='post'><input type='text' name='inputguess' value='' maxlength='1' autocomplete='off' autofocus><br><input type='submit' name='Enter' value='Enter'>";
+	req.session.solvedmessage = "<form action='/game' method='post'><input type='text' id='letterguess' name='inputguess' value='' maxlength='1' autocomplete='off' autofocus><br><input type='submit' name='Enter' value='Enter'>";
 	return getRandomWord
 	next();
 };
@@ -96,7 +106,10 @@ const checkGuess = function (req, res) {
 	}
 	if (req.session.solved === true) {
 		req.session.solvedmessage = "YOU SOLVED IT!" +
-		`<form action='/playagain' method='post'>
+		`<form action='/winnerform' method='post'>
+		<input type='submit' name= "/" value="Record Your Score?">
+		<form><br>
+		<form action='/playagain' method='post'>
 		<input type='submit' name= "/" value="Play Again?">
 		<form>`
 	}
@@ -105,7 +118,13 @@ const checkGuess = function (req, res) {
 	next();
 };
 
+
+
+
+
+
+
 module.exports = {
 	getRandomWord : getRandomWord,
-	checkGuess : checkGuess
+	checkGuess : checkGuess,
 }
