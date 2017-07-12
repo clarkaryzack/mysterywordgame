@@ -6,11 +6,9 @@ const dataeasy = require("./data_easy");
 const datamedium = require("./data_medium");
 const jsonfile = require('jsonfile');
 
-const hardwords = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
+// const hardwords = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 const easywords = dataeasy.words
 const mediumwords = datamedium.words
-
-
 
 const getRandomWord = function (req, res) {
 	console.log(req.session.difficulty);
@@ -22,10 +20,10 @@ const getRandomWord = function (req, res) {
 		req.session.singleword=mediumwords[Math.floor(Math.random() * (mediumwords.length + 1) )];
 		req.session.difflevel = "medium";
 	}
-	if (req.session.difficulty === 2){
-		req.session.singleword=hardwords[Math.floor(Math.random() * (hardwords.length + 1) )];
-		req.session.difflevel = "hard";
-	}
+	// if (req.session.difficulty === 2){
+	// 	req.session.singleword=hardwords[Math.floor(Math.random() * (hardwords.length + 1) )];
+	// 	req.session.difflevel = "hard";
+	// }
 
 	req.session.wordarr = [];
 	console.log(req.session.singleword)
@@ -117,12 +115,6 @@ const checkGuess = function (req, res) {
 	return checkGuess;
 	next();
 };
-
-
-
-
-
-
 
 module.exports = {
 	getRandomWord : getRandomWord,

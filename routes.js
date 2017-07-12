@@ -7,7 +7,7 @@ const jsonfile = require('jsonfile');
 
 const router = express.Router();
 const app = express();
-const fs    = require("fs")
+const fs = require("fs")
 const dataeasy = require("./data_easy");
 const datamedium = require("./data_medium");
 const logic = require('./logic');
@@ -70,7 +70,6 @@ router.post ('/winnerlist', function (req, res) {
 	jsonfile.writeFileSync(savefile, winners);
 	res.render('winnerlist', {winners: winners.winners}
 	);
-
 });
 
 module.exports = router;

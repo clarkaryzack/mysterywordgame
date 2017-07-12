@@ -4,17 +4,16 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const fs    = require("fs")
+const fs = require("fs")
 const dataeasy = require("./data_easy");
 const datamedium = require("./data_medium");
 const logic = require('./logic');
 const expressValidator = require('express-validator');
 
-const hardwords = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
+// const hardwords = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 const easywords = dataeasy.words
 const mediumwords = datamedium.words
 const routes = require('./routes');
-
 
 app.engine('mustache', mustacheExpress());
 app.set('views', './views');
