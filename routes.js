@@ -68,8 +68,11 @@ router.post ('/winnerlist', function (req, res) {
 	let id = winners.winners.length + 1;
 	winners.winners.push({"id": id, "name": name, "word": req.session.singleword, "difficulty": req.session.difflevel});
 	jsonfile.writeFileSync(savefile, winners);
-	res.render('winnerlist', {winners: winners.winners}
-	);
+	res.redirect('/winnerlist');
+});
+
+router.get ('/winnerlist', function (req, res) {
+	res.render('winnerlist', {winners: winners.winners});
 });
 
 module.exports = router;
