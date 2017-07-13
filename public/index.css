@@ -6,7 +6,7 @@ body {
 
 }
 #title {
-	grid-column: 1/3;
+	grid-column: 1/5;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
@@ -22,7 +22,7 @@ body {
 	margin: 10px
 }
 #hangmanimages {
-	grid-row: 2/3;
+	grid-row: 3/5;
 	grid-column: 2/3;
 	align-items: center;
 	justify-content: center;
