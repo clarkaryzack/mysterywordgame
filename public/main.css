@@ -7,10 +7,8 @@ body {
 	display: grid;
 	grid-template-columns: 25% 25% 25% 25%;
 	grid-template-rows: 20% 20% 20% 20% 20%;
-	text-align: center;
 	height: 100vh;
-	align-items: center;
-	justify-content: center;
+
 }
 #blanks {
 	grid-row: 2/3;
@@ -19,34 +17,43 @@ body {
 	border-width: 1px;
 	border-color: black;*/
 	font-size: 100px;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+
 }
 #wrongguesses {
 	grid-row: 4/5;
 	grid-column: 2/3;
-	font-size: 30px
+	font-size: 30px;
 	/*border-style: solid;
 	border-width: 1px;
 	border-color: black;*/
+	text-align: center;
+	align-items: center;
+	justify-content: center;
 }
 #hangmanimages {
 	grid-row: 4/5;
 	grid-column: 3/4;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
 }
-#hangman {
+/*#hangman {
 	width: 100%;
 	height: 100%;
-}
+}*/
 #letterguess {
 	width: 60px;
-	font-size: 50px
+	font-size: 50px;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
 }
 input:focus {
 	color: transparent;
 	text-shadow: 0 0 0 black;
-}
-#winnerheading {
-	grid-column: 1/5;
-	grid-row: 1/2;
 }
 #winnertable {
 	grid-column: 2/4;

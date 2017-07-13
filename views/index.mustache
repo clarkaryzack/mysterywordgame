@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>Hangman</title>
 		<link rel="stylesheet" href="/main.css">
+		<link rel="stylesheet" href="/index.css">
 	</head>
 	<body>
 		<div id="title">
@@ -27,6 +28,9 @@
 			</form>
 			<form action="/impossible" method="post">
 				<input type="submit" name="impossiblebutton" value="Impossible">The word is generated after you've used all of your guesses. (You cannot win this.)
+			</form>
+			<form action="/winnerlist" method="post">
+				<input type="submit" name="towinners" value="See Winner List">
 			</form>
 		</div>
 		<div id="hangmanimages">

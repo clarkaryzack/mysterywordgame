@@ -4,10 +4,11 @@
 		<meta charset="utf-8">
 		<title>Hangman</title>
 		<link rel="stylesheet" href="/main.css">
+		<link rel="stylesheet" href="/winnerlist.css">
 	</head>
 	<body>
-		<div id="winnerheading">
-			WINNERS:
+		<div id="title">
+			Hangman Champions
 		</div>
 		<div id="winnertable">
 			<table>
@@ -25,7 +26,7 @@
 			{{/winners}}
 			</table>
 			<form action='/playagain' method='post'>
-				<input type='submit' value="Play Again?">
+				<input type='submit' value="Home">
 			</form>
 		</div>
 	</body>

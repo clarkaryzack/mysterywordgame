@@ -1,0 +1,25 @@
+* {
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+}
+body {
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	grid-template-rows: 20% 20% 20% 20% 20%;
+	height: 100vh;
+
+}
+
+#title {
+	grid-column: 1/5;
+	grid-row: 1/2;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+#winnertable {
+	grid-column: 2/4;
+	grid-row: 2/6;
+}
