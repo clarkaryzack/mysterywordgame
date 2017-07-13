@@ -26,7 +26,7 @@ const getRandomWord = function (req, res) {
 	}
 	if (req.session.difficulty === 3){
 		let randomgenword = ""
-		let randomlength = Math.floor(Math.random() * (10) );
+		let randomlength = Math.floor(Math.random() * (10) +1 );
 		console.log(randomlength)
 		for (var i = 0; i < randomlength; i++) {
 			let n = Math.floor(Math.random() * (25 - 0) );
@@ -49,7 +49,7 @@ const getRandomWord = function (req, res) {
 	}
 	if (req.session.difficulty === 5){
 		let randomgenword = ""
-		req.session.randomlength = Math.floor(Math.random() * (10) );
+		req.session.randomlength = Math.floor(Math.random() * (10) +1 );
 		for (var i = 0; i < req.session.randomlength; i++) {
 			randomgenword = randomgenword + "~";
 			console.log(randomgenword)
