@@ -28,18 +28,33 @@ router.get('/', function (req, res) {
   res.render('index');
 });
 
-router.get('/easy', function (req, res) {
+router.post('/easy', function (req, res) {
 	req.session.difficulty = 0
 	res.redirect('/game')
 });
 
-router.get('/medium', function (req, res) {
+router.post('/medium', function (req, res) {
 	req.session.difficulty = 1
 	res.redirect('/game')
 });
 
-router.get('/hard', function (req, res) {
+router.post('/hard', function (req, res) {
 	req.session.difficulty = 2
+	res.redirect('/game')
+});
+
+router.post('/mystic', function (req, res) {
+	req.session.difficulty = 3
+	res.redirect('/game')
+});
+
+router.post('/apocalyptic', function (req, res) {
+	req.session.difficulty = 4
+	res.redirect('/game')
+});
+
+router.post('/impossible', function (req, res) {
+	req.session.difficulty = 5
 	res.redirect('/game')
 });
 

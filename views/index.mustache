@@ -10,14 +10,23 @@
 			Hangman
 		</div>
 		<div id="difficulty">
-			<form action="/easy" method="get">
+			<form action="/easy" method="post">
 				<input type="submit" name="easybutton" value="Easy">Basic Words
 			</form>
-			<form action="/medium" method="get">
+			<form action="/medium" method="post">
 				<input type="submit" name="mediumbutton" value="Medium">Tricky Words
 			</form>
-			<form action="/hard" method="get">
+			<form action="/hard" method="post">
 				<input type="submit" name="hardbutton" value="Hard">All of the Words
+			</form>
+			<form action="/mystic" method="post">
+				<input type="submit" name="hardbutton" value="Mystic">Guess a string of randomly generated characters.
+			</form>
+			<form action="/apocalyptic" method="post">
+				<input type="submit" name="apocalypticbutton" value="Apocalyptic">One letter.  One guess.
+			</form>
+			<form action="/impossible" method="post">
+				<input type="submit" name="impossiblebutton" value="Impossible">You cannot win this.
 			</form>
 		</div>
 		<div id="hangmanimages">
